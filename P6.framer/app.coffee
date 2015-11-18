@@ -1,90 +1,161 @@
-# INITIALIZATION - - - - - - - - - -
+# - - - - - - - - - - - - INITIALIZATION - - - - - - - - - - - -
 
 # Initialize a user (petracles) with a SteamApp session through 
 # calling the Parse Steam App API
 Parse.initialize("CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm", "YVDd3DSJ7Ok8KGZZQyxPmeI1z33kNqIumocELM0A");
 
-# LAYERS - - - - - - - - - -
+# - - - - - - - - - - - - - - LAYERS - - - - - - - - - - - - -
 
-# The background Layer:
+# BACKGROUND LAYER:
 bg = new Layer
 	backgroundColor: "#626262"
 	width: 1440
-	height: 900		
+	height: 900
 
-# Introduction Layers:
+# STAGE SUPERLAYERS:
+stageIntro = new Layer
+	backgroundColor: "transparent"
+	x: -1440
+	width: 1440
+	height: 900
+	opacity: 0
+	
+stageOne = new Layer
+	backgroundColor: "transparent"
+	x: -1440
+	width: 1440
+	height: 900
+	opacity: 0
+	
+stageTwo = new Layer
+	backgroundColor: "transparent"
+	x: -1440
+	width: 1440
+	height: 900
+	opacity: 0
+
+stageThree = new Layer
+	backgroundColor: "transparent"
+	x: -1440
+	width: 1440
+	height: 900
+	opacity: 0
+
+# STAGE INTRO LAYERS:
 steamLogo = new Layer
-	x: -1000
-	y: -1000
+	superLayer: stageIntro
 	width: 411
 	height: 369
 	image: "images/SteamLogo.png"
 steamLogo.center()
 
 goLogo = new Layer
+	superLayer: stageIntro
 	opacity: 0
 	width: 200
 	height: 107
 	image: "images/GO!.png"
 goLogo.center()
 
-# Stage One Layers:
-progressBar = new Layer
+# STAGE ONE LAYERS:
+progressBarOne = new Layer
+	superLayer: stageOne
 	backgroundColor: "Black"
 	y: -200
 	width: 1440
 	height: 175
 	html: "<span style='text-align:center'>TEXT PROMPT HERE</span>"
-progressBar.centerX()
+progressBarOne.centerX()
 
-# STATES - - - - - - - - - -
-steamLogo.states.add
-	StageIntro:
-		opacity: 1
-		visible: true
-	StageOne:
-		opacity: 0
-		visible: false
-	StageTwo:
-		opacity: 0
-		visible: false
-	StageThree:
-		opacity: 0
-		visible: false
-steamLogo.states.animationOptions =
-	time: 0.5
+prompt = new Layer
+	superLayer: stageOne
+	x: 220
+	y: 250
+	width: 1000
+	height: 50
+	backgroundColor: 'transparent'
+	html: "hey I'm another prompt right here!"
 
-goLogo.states.add
-	StageIntro:
-		opacity: 0
-		visible: true
-	StageOne:
-		opacity: 0
-		visible: false
-	StageTwo:
-		opacity: 0
-		visible: false
-	StageThree:
-		opacity: 0
-		visible: false
-goLogo.states.animationOptions =
-	time: 0.5
+# - - - - - - - - - - - - STAGE STATES - - - - - - - - - - - -
 
-progressBar.states.add
+stageIntro.states.add
 	Hidden:
-		y: -200
-		opacity: 1
+		opacity: 0
+		x: -1440
 	Shown:
-		y: 0
 		opacity: 1
-progressBar.states.animationOptions =
-	time: 2
+		x: 0
+stageIntro.states.animationOptions =
+	time: 1.5
 
-# INTRODUCTION STAGE - - - - - - - - - -
-startStageIntro = ->
-	steamLogo.states.switch("StageIntro")
-	goLogo.states.switch("StageIntro")
-	progressBar.states.switch("Hidden")
+stageOne.states.add
+	Hidden:
+		opacity: 0
+		x: -1440
+	Shown:
+		opacity: 1
+		x: 0
+stageIntro.states.animationOptions =
+	time: 1.5
+
+stageTwo.states.add
+	Hidden:
+		opacity: 0
+		x: -1440
+	Shown:
+		opacity: 1
+		x: 0
+stageIntro.states.animationOptions =
+	time: 1.5
+	
+stageThree.states.add
+	Hidden:
+		opacity: 0
+		x: -1440
+	Shown:
+		opacity: 1
+		x: 0
+stageIntro.states.animationOptions =
+	time: 1.5
+
+# - - - - - - - - - - - - LAYER STATES - - - - - - - - - - - -
+
+# STAGE INTRO:
+# steamLogo.states.add
+# 	Hidden:
+# 		opacity: 0
+# 		visible: false
+# 	Shown:
+# 		opacity: 1
+# 		visible: true
+# 
+# STAGE ONE:
+# goLogo.states.add
+# 	Hidden:
+# 		opacity: 0
+# 		visible: false
+# 	Shown:
+# 		opacity: 0
+# 		visible: true
+# 
+# prompt.states.add
+# 	Hidden:
+# 		opacity: 0
+# 		visible: false
+# 	Shown:
+# 		opacity: 1
+# 		visible: true
+# 
+# STAGE AGNOSTIC
+# progressBar.states.add
+# 	Hidden:
+# 		y: -200
+# 		opacity: 0
+# 	Shown:
+# 		y: 0
+# 		opacity: 1
+
+# - - - - - - - - - ANIMATION FUNCTIONS - - - - - - - - -
 
 animateStartButtonMouseOver = ->
 	steamLogo.animate
@@ -95,6 +166,7 @@ animateStartButtonMouseOver = ->
 		properties:
 			opacity: 1
 		time: 0.4
+steamLogo.on Events.MouseOver, animateStartButtonMouseOver
 
 animateStartButtonMouseOff = ->
 	steamLogo.animate
@@ -105,23 +177,28 @@ animateStartButtonMouseOff = ->
 		properties:
 			opacity: 0
 		time: 0.4
+steamLogo.on Events.MouseOut, animateStartButtonMouseOff
 
-# STAGE ONE: - - - - - - - - - -
-startStageOne = ->
-	steamLogo.states.switch("StageOne")
-	goLogo.states.switch("StageOne")
-	progressBar.states.switch("Shown", time: 1.5, curve: "ease")
+# - - - - - - - - - - STAGE FUNCTIONS - - - - - - - - - -
+
+# INTRO STAGE:
+startStageIntro = ->
+	stageIntro.states.switch("Shown")
 	
-	prompt = new Layer
-		backgroundColor: 'transparent'
-		html: "hey I'm another prompt right here!"
-	prompt.animate
-		properties:
-			x: 220
-			y: 250
-			width: 1000
-			height: 50
-		time: 0.5
+# 	steamLogo.states.switch("Shown")
+# 	goLogo.states.switch("Shown")
+# 	progressBar.states.switch("Hidden")
+# 	prompt.states.switch("Hidden")
+
+# STAGE ONE:
+startStageOne = ->
+	stageIntro.states.switch("Hidden")
+	stageOne.states.switch("Shown")
+
+# 	steamLogo.states.switch("Hidden")
+# 	goLogo.states.switch("Hidden")
+# 	progressBar.states.switch("Shown", time: 1.5, curve: "ease")
+# 	prompt.states.switch("Shown", time: 1.5, curve: "ease")
 
 	# Loop and add create the Criteria Questions
 	criteriaList = new ScrollComponent
@@ -166,8 +243,7 @@ startStageOne = ->
 # Start the application:
 startStageIntro()
 
-steamLogo.on Events.MouseOver, animateStartButtonMouseOver
-steamLogo.on Events.MouseOut, animateStartButtonMouseOff
-
 # Start State One if GO is clicked:
 steamLogo.on Events.Click, -> startStageOne()
+
+# stageOne.x = 0
