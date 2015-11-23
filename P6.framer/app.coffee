@@ -6,13 +6,13 @@ Parse.initialize("CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm", "YVDd3DSJ7Ok8KGZZQy
 
 # - - - - - - - - - - - - - - LAYERS - - - - - - - - - - - - -
 
-# BACKGROUND LAYER:
+# BACKGROUND LAYER - - - - - - - - - -
 bg = new Layer
 	backgroundColor: "#626262"
 	width: 1440
 	height: 900
 
-# STAGE SUPERLAYERS:
+# STAGE SUPERLAYERS - - - - - - - - - -
 stageIntro = new Layer
 	backgroundColor: "transparent"
 	x: -1440
@@ -41,7 +41,7 @@ stageThree = new Layer
 	height: 900
 	opacity: 0
 
-# STAGE INTRO LAYERS:
+# STAGE-INTRO STATIC LAYERS - - - - - - - - - -
 steamLogo = new Layer
 	superLayer: stageIntro
 	width: 411
@@ -57,27 +57,123 @@ goLogo = new Layer
 	image: "images/GO!.png"
 goLogo.center()
 
-# STAGE ONE LAYERS:
+# STAGE-ONE STATIC LAYERS - - - - - - - - - -
 progressBarOne = new Layer
 	superLayer: stageOne
-	backgroundColor: "Black"
-	y: -200
 	width: 1440
 	height: 175
-	html: "<span style='text-align:center'>TEXT PROMPT HERE</span>"
+	image: "images/ProgressBar_1.png"
 progressBarOne.centerX()
 
-prompt = new Layer
+nextButton1 = new Layer
+	superLayer: stageOne
+	x: 1150
+	y: 40
+	width: 250
+	height: 80
+	opacity: 0
+	visible: false
+	image: "images/NextButton.png"
+
+promptOne = new Layer
 	superLayer: stageOne
 	x: 220
 	y: 250
 	width: 1000
 	height: 50
 	backgroundColor: 'transparent'
-	html: "hey I'm another prompt right here!"
+	html: "Choose one or more criteria:"
+promptOne.style =
+	"text-align":"center"
+	"font-size":"125%"
+
+criteriaList = new ScrollComponent
+	superLayer: stageOne
+	backgroundColor: 'transparent'
+	x: 50
+	y: 175
+	width: 1340
+	height: 700
+criteriaList.scrollVertical = false
+
+# STAGE-TWO STATIC LAYERS - - - - - - - - - -
+progressBarTwo = new Layer
+	superLayer: stageTwo
+	width: 1440
+	height: 175
+	image: "images/ProgressBar_2.png"
+progressBarOne.centerX()
+
+promptTwo = new Layer
+	superLayer: stageTwo
+	x: 220
+	y: 250
+	width: 1000
+	height: 50
+	backgroundColor: 'transparent'
+	html: "Answer the following:"
+promptTwo.style =
+	"text-align":"center"
+	"font-size":"125%"
+
+backButton1 = new Layer
+	superLayer: stageTwo
+	x: 50
+	y: 40
+	width: 250
+	height: 80
+	image: "images/BackButton.png"
+
+nextButton2 = new Layer
+	superLayer: stageTwo
+	x: 1150
+	y: 40
+	width: 250
+	height: 80
+	opacity: 0
+	visible: false
+	image: "images/NextButton.png"
+	
+# STAGE-THREE STATIC LAYERS - - - - - - - - - -
+progressBarThree = new Layer
+	superLayer: stageThree
+	width: 1440
+	height: 175
+	image: "images/ProgressBar_3.png"
+progressBarThree.centerX()
+
+promptThree = new Layer
+	superLayer: stageThree
+	x: 220
+	y: 250
+	width: 1000
+	height: 50
+	backgroundColor: 'transparent'
+	html: "Choose your game!"
+promptThree.style =
+	"text-align":"center"
+	"font-size":"125%"
+
+backButton2 = new Layer
+	superLayer: stageThree
+	x: 50
+	y: 40
+	width: 250
+	height: 80
+	image: "images/BackButton.png"
+
+resultsList = new ScrollComponent
+	superLayer: stageThree
+	backgroundColor: 'transparent'
+	x: 50
+	y: 175
+	width: 1340
+	height: 700
+resultsList.scrollVertical = false
 
 # - - - - - - - - - - - - STAGE STATES - - - - - - - - - - - -
 
+# STAGE-INTRO STATES:
 stageIntro.states.add
 	Hidden:
 		opacity: 0
@@ -88,6 +184,7 @@ stageIntro.states.add
 stageIntro.states.animationOptions =
 	time: 1.5
 
+# STAGE-ONE STATES:
 stageOne.states.add
 	Hidden:
 		opacity: 0
@@ -98,6 +195,7 @@ stageOne.states.add
 stageIntro.states.animationOptions =
 	time: 1.5
 
+# STAGE-TWO STATES:
 stageTwo.states.add
 	Hidden:
 		opacity: 0
@@ -107,7 +205,8 @@ stageTwo.states.add
 		x: 0
 stageIntro.states.animationOptions =
 	time: 1.5
-	
+
+# STAGE-THREE STATES:
 stageThree.states.add
 	Hidden:
 		opacity: 0
@@ -117,43 +216,6 @@ stageThree.states.add
 		x: 0
 stageIntro.states.animationOptions =
 	time: 1.5
-
-# - - - - - - - - - - - - LAYER STATES - - - - - - - - - - - -
-
-# STAGE INTRO:
-# steamLogo.states.add
-# 	Hidden:
-# 		opacity: 0
-# 		visible: false
-# 	Shown:
-# 		opacity: 1
-# 		visible: true
-# 
-# STAGE ONE:
-# goLogo.states.add
-# 	Hidden:
-# 		opacity: 0
-# 		visible: false
-# 	Shown:
-# 		opacity: 0
-# 		visible: true
-# 
-# prompt.states.add
-# 	Hidden:
-# 		opacity: 0
-# 		visible: false
-# 	Shown:
-# 		opacity: 1
-# 		visible: true
-# 
-# STAGE AGNOSTIC
-# progressBar.states.add
-# 	Hidden:
-# 		y: -200
-# 		opacity: 0
-# 	Shown:
-# 		y: 0
-# 		opacity: 1
 
 # - - - - - - - - - ANIMATION FUNCTIONS - - - - - - - - -
 
@@ -179,64 +241,173 @@ animateStartButtonMouseOff = ->
 		time: 0.4
 steamLogo.on Events.MouseOut, animateStartButtonMouseOff
 
+backButtonOne = ->
+	print: "Returning to the Criteria Selection"
+	stageTwo.states.switch("Hidden")
+	startStageOne()
+backButton1.on Events.Click, backButtonOne
+
+backButtonTwo = ->
+	print: "Returning to the Criteria Selection"
+	stageThree.states.switch("Hidden")
+	startStageOne()
+backButton2.on Events.Click, backButtonTwo
+
+showNextOne = ->
+	print "Added a criteria to the session"
+	nextButton1.animate
+		properties:
+			opacity: 1
+		time: 0.8
+	nextButton1.visible = true
+
+showNextTwo = ->
+	print "Added a question response to the session"
+	nextButton2.animate
+		properties:
+			opacity: 1
+		time: 0.8
+	nextButton2.visible = true
+
+showDetailsBlurb = (game) ->
+	print "Showing deatils for " + game
+	detailsBlurb = new Layer
+		width: 1180
+		height: 600
+		backgroundColor: 'gray'
+		opacity: 0
+		html: "Play: " + game
+	detailsBlurb.animate
+		properties:
+			opacity: 1
+		time: 0.9
+	detailsBlurb.style = 
+		"text-align":"center"
+		"font-size":"210%"
+	detailsBlurb.center()
+	detailsBlurb.bringToFront()
+
+	xBtn = new Layer
+		superLayer: detailsBlurb
+		image: "images/xBtn.png"
+	xBtn.on Events.Click, -> detailsBlurb.destroy()
+
 # - - - - - - - - - - STAGE FUNCTIONS - - - - - - - - - -
 
 # INTRO STAGE:
 startStageIntro = ->
 	stageIntro.states.switch("Shown")
-	
-# 	steamLogo.states.switch("Shown")
-# 	goLogo.states.switch("Shown")
-# 	progressBar.states.switch("Hidden")
-# 	prompt.states.switch("Hidden")
 
 # STAGE ONE:
 startStageOne = ->
+	# Update stages
 	stageIntro.states.switch("Hidden")
 	stageOne.states.switch("Shown")
-
-# 	steamLogo.states.switch("Hidden")
-# 	goLogo.states.switch("Hidden")
-# 	progressBar.states.switch("Shown", time: 1.5, curve: "ease")
-# 	prompt.states.switch("Shown", time: 1.5, curve: "ease")
-
-	# Loop and add create the Criteria Questions
-	criteriaList = new ScrollComponent
-		backgroundColor: 'transparent'
-		y: -1000
-		width: 1240
-		height: 900
-	criteriaList.scrollVertical = false
 	
-	params = 
+	# Make the parameters for the request, then make the request
+	getCriteriaParams = 
 		uri: "/v1/criteria"
 		verb: "GET"
 	
-	Parse.Cloud.run 'serve', params,
+	Parse.Cloud.run 'serve', getCriteriaParams,
 		success: (results) ->
 			i = 0
+			# Loop and add create the Criteria Questions objects
 			for result in results
 				criteria = new Layer
 					superLayer: criteriaList.content
-					name: "Criteria " + result.name
-					html: result.name
-					width: 300
-					height: 300
-					x: i * 350
-					y: 225
-					opacity: 1
-				print(result.name)
+					image: result.icon_url
+					name: "Criteria_" + result.name
+					opacity: 0
+					width: 650
+					height: 550
+					x: i * 650
+					y: 175
+				criteria.animate
+					properties:
+						opacity: 1
+					time: 2.25
 				i++
-			criteriaList.x = 100
-			criteriaList.y = 175
+				criteria.on Events.Click, showNextOne
 		error: (err) ->
-			print("Error: #{err}")
+			print("Error")
+	
+	# Delete Stage Intro for mem
+	stageIntro.destroy()
 
 # STAGE TWO: - - - - - - - - - -
 
+# Update stages
+startStageTwo = ->
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Shown")
+	
+	# Make the parameters for the request, then make the request
+	getQuestionsParams = 
+		uri: "/v1/questions"
+		verb: "GET"
+	
+	Parse.Cloud.run 'serve', getQuestionsParams,
+		success: (result) ->
+			result = result[0]
+			i = 0
+			for question in result.questions
+				questionBox = new Layer
+					superLayer: stageTwo
+					name: "Question_" + i
+					opacity: 0
+					y: i * 150 + 350
+					width: 1000
+					height: 80
+					image: "images/questionBox.png"
+					html: question.text
+				questionBox.animate
+					properties:
+						opacity: 1
+					time: 2.25
+				questionBox.style =
+					"color":"black"
+					"text-align":"center"
+				questionBox.centerX()
+				questionBox.on Events.Click, showNextTwo
+				i++
+		error: (err) ->
+			print("Error")
 
 # STAGE THREE: - - - - - - - - - - -
-
+startStageThree = ->
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Hidden")
+	stageThree.states.switch("Shown")
+	
+	getResultsBoxParams = 
+		uri: "/v1/users/123/session"
+		verb: "GET"
+	
+	Parse.Cloud.run 'serve', getResultsBoxParams,
+		success: (result) ->
+			i = 0
+			for game in result.games
+				gameResult = new Layer
+					superLayer: resultsList.content
+# 					image: result.icon_url
+					name: "Game_" + game.name
+					opacity: 0
+					width: 350
+					height: 550
+					x: i * 550
+					y: 175
+					html: game.name
+				gameResult.style =
+					"text-align":"center"
+				gameResult.animate
+					properties:
+						opacity: 1
+					time: 2.25
+				i++
+				gameResult.on Events.Click, -> showDetailsBlurb this.name
+		error: (err) ->
+			print("Error")
 
 # - - - - - - - - - - THE PROGRAM MAIN - - - - - - - - - -
 
@@ -246,4 +417,8 @@ startStageIntro()
 # Start State One if GO is clicked:
 steamLogo.on Events.Click, -> startStageOne()
 
-# stageOne.x = 0
+nextButton1.on Events.Click, -> startStageTwo()
+
+nextButton2.on Events.Click, -> startStageThree()
+
+# playButton.on Events.Click, -> startLaunchingSteamScreen()
