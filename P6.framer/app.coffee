@@ -284,6 +284,7 @@ showDetailsBlurb = (game) ->
 	detailsBlurb.style = 
 		"text-align":"center"
 		"font-size":"210%"
+		"padding-top":"25px"
 	detailsBlurb.center()
 	detailsBlurb.bringToFront()
 
@@ -368,6 +369,8 @@ startStageTwo = ->
 				questionBox.style =
 					"color":"black"
 					"text-align":"center"
+					"font-size":"120%"
+					"padding-top":"25px"
 				questionBox.centerX()
 				questionBox.on Events.Click, showNextTwo
 				i++
