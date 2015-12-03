@@ -44,19 +44,15 @@ stageThree = new Layer
 # STAGE-INTRO STATIC LAYERS - - - - - - - - - -
 welcomePrompt = new Layer
 	superLayer: stageIntro
-	backgroundColor: "white"
-	width: 900
-	height: 90
-	y: 100
-	borderWidth: 2
-	borderColor: 'black'
-	borderRadius: 50
+	backgroundColor: "#4A4A4A"
+	width: 1500
+	height: 175
 	html: "Let's Find You Something to Play!"
 welcomePrompt.centerX()
 welcomePrompt.style =
-	"color":"black"
+	"color":"white"
 	"font-size":"175%"
-	"padding":"30px"
+	"padding":"75px"
 	"text-align":"center"
 
 usernameFieldHtml = "<input style='color:gray; width:100%; padding:20px; font-size:35px; text-align:center' type='text' value='Enter Your Steam Account Name'>"
@@ -280,13 +276,13 @@ steamLogo.on Events.MouseOut, animateStartButtonMouseOff
 backButtonOne = ->
 	print: "Returning to the Criteria Selection"
 	stageTwo.states.switch("Hidden")
-	startStageOne()
+	showStageOne()
 backButton1.on Events.Click, backButtonOne
 
 backButtonTwo = ->
 	print: "Returning to the Criteria Selection"
 	stageThree.states.switch("Hidden")
-	startStageOne()
+	showStageTwo()
 backButton2.on Events.Click, backButtonTwo
 
 addCriteria = ->
@@ -313,10 +309,13 @@ addAnswer = ->
 	
 	# do session stuff here
 	
-	this.animate
+	this.animate if this.y is 450
 		properties:
 			y: 475
 		time: 0.8
+	else this.animate
+		properties:
+			y: 450
 	
 	nextButton2.animate
 		properties:
@@ -383,7 +382,6 @@ startLaunchingSteamScreen = ->
 
 # - - - - - - - - - - PARSE FUNCTIONS - - - - - - - - - -
 getCriteria = ->
-	
 	# Make the parameters for the request, then make the request
 	getCriteriaParams = 
 		uri: "/v1/criteria"
@@ -525,9 +523,13 @@ startStageOne = ->
 	
 	# Get all of the Criteria
 	getCriteria()
-		
 	# Delete Stage Intro for mem
 	stageIntro.destroy()
+
+showStageOne = ->
+	stageOne.states.switch("Shown")
+	stageTwo.states.switch("Hidden")
+	stageThree.states.switch("Hidden")
 
 # STAGE TWO: - - - - - - - - - -
 
@@ -539,6 +541,11 @@ startStageTwo = ->
 	# Get all of the Questions
 	getQuestions()
 
+showStageTwo = ->
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Shown")
+	stageThree.states.switch("Hidden")
+
 # STAGE THREE: - - - - - - - - - - -
 startStageThree = ->
 	stageOne.states.switch("Hidden")
@@ -547,6 +554,11 @@ startStageThree = ->
 	
 	# Get the Results from the current Session
 	getResults()
+
+showStageThree = ->
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Hidden")
+	stageThree.states.switch("Shown")
 
 # - - - - - - - - - - THE PROGRAM MAIN - - - - - - - - - -
 
