@@ -425,11 +425,12 @@ getQuestions = ->
 				questionBox = new Layer
 					superLayer: stageTwo
 					name: "Question_" + i
-					opacity: 0
+					opacity: 1
+					backgroundColor: "lightgray"
+					borderRadius: 20
 					y: i * 150 + 350
 					width: 1000
 					height: 80
-					image: "images/questionBox.png"
 					html: question.text
 				questionBox.animate
 					properties:
