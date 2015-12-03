@@ -42,20 +42,55 @@ stageThree = new Layer
 	opacity: 0
 
 # STAGE-INTRO STATIC LAYERS - - - - - - - - - -
+welcomePrompt = new Layer
+	superLayer: stageIntro
+	backgroundColor: "white"
+	width: 900
+	height: 90
+	y: 100
+	borderWidth: 2
+	borderColor: 'black'
+	borderRadius: 50
+	html: "Let's Find You Something to Play!"
+welcomePrompt.centerX()
+welcomePrompt.style =
+	"color":"black"
+	"font-size":"175%"
+	"padding":"30px"
+	"text-align":"center"
+
+usernameFieldHtml = "<input style='color:gray; width:100%; padding:20px; font-size:35px; text-align:center' type='text' value='Enter Your Steam Account Name'>"
+
+usernameField = new Layer
+	superLayer: stageIntro
+	backgroundColor: "lightgray"
+	width: 700
+	height: 90
+	y: 300
+	borderWidth: 2
+	borderColor: 'black'
+	borderRadius: 50
+	html: usernameFieldHtml
+	opacity: 0
+usernameField.centerX()
+
 steamLogo = new Layer
 	superLayer: stageIntro
 	width: 411
 	height: 369
+	y: 450
+	scale: 0.8
 	image: "images/SteamLogo.png"
-steamLogo.center()
+steamLogo.centerX()
 
 goLogo = new Layer
 	superLayer: stageIntro
 	opacity: 0
 	width: 200
 	height: 107
+	y: 575
 	image: "images/GO!.png"
-goLogo.center()
+goLogo.centerX()
 
 # STAGE-ONE STATIC LAYERS - - - - - - - - - -
 progressBarOne = new Layer
@@ -77,19 +112,20 @@ nextButton1 = new Layer
 
 promptOne = new Layer
 	superLayer: stageOne
+	backgroundColor: "transparent"
 	x: 220
 	y: 250
 	width: 1000
 	height: 50
-	backgroundColor: 'transparent'
+	backgroundColor: "transparent"
 	html: "Choose one or more criteria:"
 promptOne.style =
 	"text-align":"center"
-	"font-size":"125%"
+	"font-size":"150%"
 
 criteriaList = new ScrollComponent
 	superLayer: stageOne
-	backgroundColor: 'transparent'
+	backgroundColor: "transparent"
 	x: 50
 	y: 175
 	width: 1340
@@ -114,7 +150,7 @@ promptTwo = new Layer
 	html: "Answer the following:"
 promptTwo.style =
 	"text-align":"center"
-	"font-size":"125%"
+	"font-size":"150%"
 
 backButton1 = new Layer
 	superLayer: stageTwo
@@ -261,10 +297,27 @@ addCriteria = ->
 			opacity: 1
 		time: 0.8
 	nextButton1.visible = true
+	# Move up selected criteria and add to Session:
+	# addToSession(this)
+	this.animate if this.y>170
+		properties:
+			y: 100
+	# Move down selected criteria and remove from Session:
+	#removeFromSession(this)
+	else this.animate
+		properties:
+			y: 175
 
-addQuestionAnswer = ->
+addAnswer = ->
 	print "Added a question response to the session for this question: " + this.html
+	
 	# do session stuff here
+	
+	this.animate
+		properties:
+			y: 475
+		time: 0.8
+	
 	nextButton2.animate
 		properties:
 			opacity: 1
@@ -273,7 +326,7 @@ addQuestionAnswer = ->
 
 showDetailsBlurb = (game) ->
 	# Dim and disable everything behind details blurb:
-	stageThree.opacity = 0.4
+	stageThree.opacity = 0.25
 	backButton2.ignoreEvents = true
 	
 	# Bring up details blurb for selected game:
@@ -328,17 +381,8 @@ showDetailsBlurb = (game) ->
 startLaunchingSteamScreen = ->
 	print "LAUNCHING STEAM!"
 
-# - - - - - - - - - - STAGE FUNCTIONS - - - - - - - - - -
-
-# INTRO STAGE:
-startStageIntro = ->
-	stageIntro.states.switch("Shown")
-
-# STAGE ONE:
-startStageOne = ->
-	# Update stages
-	stageIntro.states.switch("Hidden")
-	stageOne.states.switch("Shown")
+# - - - - - - - - - - PARSE FUNCTIONS - - - - - - - - - -
+getCriteria = ->
 	
 	# Make the parameters for the request, then make the request
 	getCriteriaParams = 
@@ -367,17 +411,8 @@ startStageOne = ->
 				criteria.on Events.Click, addCriteria
 		error: (err) ->
 			print("Error")
-	
-	# Delete Stage Intro for mem
-	stageIntro.destroy()
 
-# STAGE TWO: - - - - - - - - - -
-
-# Update stages
-startStageTwo = ->
-	stageOne.states.switch("Hidden")
-	stageTwo.states.switch("Shown")
-	
+getQuestions = ->
 	# Make the parameters for the request, then make the request
 	getQuestionsParams = 
 		uri: "/v1/questions"
@@ -385,8 +420,8 @@ startStageTwo = ->
 	
 	Parse.Cloud.run 'serve', getQuestionsParams,
 		success: (result) ->
-# 			print result
 			result = result[0]
+			# Create the Question Boxes
 			i = 0
 			for question in result.questions
 				questionBox = new Layer
@@ -408,23 +443,44 @@ startStageTwo = ->
 					"font-size":"120%"
 					"padding-top":"25px"
 				questionBox.centerX()
-				questionBox.on Events.Click, addQuestionAnswer
+				
+				# Create the Answer Boxes
+				j = 0
+				for response in question.responses
+					responseBox = new Layer
+						superLayer: stageTwo
+						name: "Response_" + j
+						backgroundColor: "darkgray"
+						borderRadius: 20
+						opacity: 0
+						y: 450
+						x: j * 250 + 250
+						width: 200
+						height: 80
+						html: response.text
+					responseBox.style = 
+						"color":"black"
+						"text-align":"center"
+						"font-size":"120%"
+						"padding-top":"25px"
+					responseBox.animate
+						properties:
+							opacity: 1
+						time: 2.25
+					responseBox.on Events.Click, addAnswer
+					j++
 				i++
 		error: (err) ->
-			print("Error")
+			print("Error: Questions could not be retrieved")
 
-# STAGE THREE: - - - - - - - - - - -
-startStageThree = ->
-	stageOne.states.switch("Hidden")
-	stageTwo.states.switch("Hidden")
-	stageThree.states.switch("Shown")
-	
+getResults = ->
 	getResultsBoxParams = 
-		uri: "/v1/users/123/session"
+		uri: "/v1/users/DdOBG6MuKb/session"
 		verb: "GET"
 	
 	Parse.Cloud.run 'serve', getResultsBoxParams,
 		success: (result) ->
+# 			print result
 			i = 0
 			for game in result.games
 				gameResult = new Layer
@@ -446,7 +502,51 @@ startStageThree = ->
 				i++
 				gameResult.on Events.Click, -> showDetailsBlurb this
 		error: (err) ->
-			print("Error")
+			print("Error: current Session Results could not be retrieved!")
+
+# - - - - - - - - - - STAGE FUNCTIONS - - - - - - - - - -
+
+# INTRO STAGE:
+startStageIntro = ->
+	stageIntro.states.switch("Shown")
+	
+	usernameField.animate
+		properties:
+	 		opacity: 1
+		time: 2.5
+
+# STAGE ONE:
+startStageOne = ->
+	# Update stages
+	stageIntro.states.switch("Hidden")
+	stageOne.states.switch("Shown")
+	
+	# HANDLE USERNAME FIELD HERE!
+	
+	# Get all of the Criteria
+	getCriteria()
+		
+	# Delete Stage Intro for mem
+	stageIntro.destroy()
+
+# STAGE TWO: - - - - - - - - - -
+
+startStageTwo = ->
+	# Update stages
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Shown")
+	
+	# Get all of the Questions
+	getQuestions()
+
+# STAGE THREE: - - - - - - - - - - -
+startStageThree = ->
+	stageOne.states.switch("Hidden")
+	stageTwo.states.switch("Hidden")
+	stageThree.states.switch("Shown")
+	
+	# Get the Results from the current Session
+	getResults()
 
 # - - - - - - - - - - THE PROGRAM MAIN - - - - - - - - - -
 
