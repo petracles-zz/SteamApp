@@ -5,9 +5,6 @@
 # Initialize the Parse SteamApp API:
 Parse.initialize("CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm", "YVDd3DSJ7Ok8KGZZQyxPmeI1z33kNqIumocELM0A");
 
-# Modeuls:
-# dbRequests = require "dbRequestsModule"
-
 
 
 # - - - - - - - - - - - APPLICATION VARS - - - - - - - - - - - - -
@@ -25,6 +22,8 @@ excludeGames = []
 
 # Session ID:
 sessionID = ""
+
+# Array for previous Question cleanup:
 questionCleanup = []
 
 
@@ -487,21 +486,20 @@ showDetailsBlurb = (game) ->
 # 			console.log(err)
 
 # - - - - - SESSION: - - - - - 
+ 
+# getSession = ->
+# 	# Make the parameters for the request, then make the request
+# 	getSessionParams = 
+# 		'uri': '/v1/users/DdOBG6MuKb/sessions/YDjPp8XZSG'
+# 		'verb': 'GET'
+# 	
+# 	Parse.Cloud.run 'serve', getSessionParams,
+# 		success: (results) ->
+# 			console.log results
+# 		error: (err) ->
+# 			console.log(err)
 
-# Comment:
-getSession = ->
-	# Make the parameters for the request, then make the request
-	getSessionParams = 
-		'uri': '/v1/users/DdOBG6MuKb/sessions/YDjPp8XZSG'
-		'verb': 'GET'
-	
-	Parse.Cloud.run 'serve', getSessionParams,
-		success: (results) ->
-			console.log results
-		error: (err) ->
-			console.log(err)
-
-# Comment:
+# Make a new Session at each application start
 postSession = ->
 	# Make the parameters for the request, then make the request
 	postSessionParams = 
@@ -717,11 +715,12 @@ getResults = ->
 # StageIntro:
 startStageIntro = ->
 	stageIntro.states.switch("Shown")
-	
-	postSession()
 
 # StageOne:
 startStageOne = ->
+	# Create a Session
+	postSession()
+	
 	# Update stages
 	stageIntro.states.switch("Hidden")
 	stageOne.states.switch("Shown")
