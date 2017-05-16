@@ -1,4 +1,7 @@
-# SteamApp
+# SteamApp (Legacy)
+
+R.I.P. ParseJS, the demo no longer works for SteamApp.
+
 Using FramerJS, ParseJS, and Steam's Web API, we're building a web-app that is designed to help PC gamers figure out what game they should play in their Steam library at that point in time.
 
 In the master, you will find the .coffee file that currently holds (all of) the code. It has not been modularized yet, so performance might be a bit sluggish, and the source a bit much to digest. The current state of the project is "functionally complete" albiet one or two minor bugs in there due to Framer's poor reliability working with back-end systems. To see the current build in action, go here:
